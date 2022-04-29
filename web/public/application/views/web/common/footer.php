@@ -35,14 +35,6 @@
                     <?php } ?>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                <h5 class="text-light footer-head"><?php echo $this->lang->line('PTY_hardware') ?></h5>
-                <ul class="list-unstyled footer-list mt-4">
-                    <?php foreach (getHardwareMenu() as $hardwareMenu) { ?>
-                        <li><a href="<?php echo base_url('details/') . $hardwareMenu->seo_url ?>" class="text-foot"><i class="uil uil-angle-right-b ms-1"></i><?php echo ($_SESSION['lang'] == 'en') ? $hardwareMenu->title_en : $hardwareMenu->title_tr ?></a></li>
-                    <?php } ?>
-                </ul>
-            </div>
             <!--end col-->
         </div>
         <!--end row-->
@@ -81,10 +73,9 @@
                     <!-- Modal Content End -->
                 </div>
             </div>
+            <!--end col-->
         </div>
-        <!--end col-->
-    </div>
-    <!--end row-->
+        <!--end row-->
     </div>
     <!--end container-->
 </footer>

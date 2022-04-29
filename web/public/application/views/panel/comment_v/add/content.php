@@ -9,19 +9,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Yeni Yorum</h4>
+                    <h4 class="card-title">Yeni Servis</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body">
                         <form class="form" action="<?php echo base_url('DashboardComment/addComment') ?>" method="post" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="col-12">
-                                    <img src="<?php echo base_url('assets/uploads/no-image.png') ?>" class="rounded mx-auto d-block" width="175">
-                                    <div class="mb-4">
-                                        <label for="formFileSm" class="form-label">Görsel</label>
-                                        <input class="form-control form-control-sm" name="image" type="file" required>
-                                    </div>
-                                </div>
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
                                         <label for="first-name-icon">İsim<code>*</code></label>
@@ -31,6 +24,17 @@
                                                 <i class="bi bi-fonts"></i>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="first-name-icon">Eğitim Seçimi<code>*</code></label>
+                                        <select name="trainingId" class="form-control form-select">
+                                            <?php foreach (getTraining() as $trainingItem) { ?>
+                                                <option value="<?php echo $trainingItem->Id ?>"><?php echo $trainingItem->trainingName_tr ?></option>
+                                            <?php } ?>
+
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12">

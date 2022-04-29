@@ -12,9 +12,9 @@ class MY_Controller extends CI_Controller
 		}
 		$this->load->model('pages_model');
 		$this->load->model('menu_model');
-		$this->load->model('contact_model');
-		$this->load->model('product_model');
-		$this->load->model('features_model');
+		$this->load->model('training_model');
+		$this->load->model('tutor_model');
+		$this->load->model('blog_model');
 	}
 
 	function switchLang()

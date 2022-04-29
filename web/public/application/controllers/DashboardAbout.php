@@ -45,64 +45,65 @@ class DashboardAbout extends CI_Controller
 
 		if ($validate) {
 
+			if (isset($_FILES["header_img"]) && $_FILES["header_img"]["name"] != '' && $_FILES["header_img"]["name"] != "no-photo.png" || isset($_FILES["product_img"]) && $_FILES["product_img"]["name"] != '' && $_FILES["product_img"]["name"] != "no-photo.png") {
 
-			if ($_FILES['header_img']['name'] != "") {
-
-				if ($_FILES['header_img']['name'] != $this->input->post('old_header_img') && $_FILES['header_img']['name'] != null && $_FILES['header_img']['name'] != "no-photo.png") {
+				if ($_FILES['header_img']['name'] != $this->input->post('old_header_img')) {
 					unlink('assets/uploads/' . $this->input->post('old_header_img'));
 				}
-				$headerImg = $this->ddoo_upload('header_img');
-			}
 
-			if ($_FILES['product_img']['name'] != "") {
-				if ($_FILES['product_img']['name'] != $this->input->post('old_product_img') && $_FILES['product_img']['name'] != null && $_FILES['product_img']['name'] != "no-photo.png") {
+				if ($_FILES['product_img']['name'] != $this->input->post('old_product_img')) {
 					unlink('assets/uploads/' . $this->input->post('old_product_img'));
 				}
+
+				$headerImg = $this->ddoo_upload('header_img');
 				$productImg = $this->ddoo_upload('product_img');
-			}
 
+				if (isset($headerImg) && !isset($productImg)) {
+					echo "1";
+					die();
+					$data = array(
+						'header_img' => $headerImg['upload_data']['file_name'],
+						'product_img' => htmlspecialchars($this->input->post('old_product_img')),
+						'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
+						'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
+						'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
+						'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
+						'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
+						'video_en'    => htmlspecialchars($this->input->post('video_en')),
 
-			if (isset($headerImg) && !isset($productImg)) {
+					);
+				} else if (!isset($headerImg) && isset($productImg)) {
+					echo "2";
+					die();
+					$data = array(
+						'header_img' => htmlspecialchars($this->input->post('old_header_img')),
+						'product_img' => $productImg['upload_data']['file_name'],
+						'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
+						'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
+						'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
+						'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
+						'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
+						'video_en'    => htmlspecialchars($this->input->post('video_en')),
 
-				$data = array(
-					'header_img' => $headerImg['upload_data']['file_name'],
-					'product_img' => htmlspecialchars($this->input->post('old_product_img')),
-					'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
-					'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
-					'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
-					'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
-					'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
-					'video_en'    => htmlspecialchars($this->input->post('video_en')),
+					);
+				} else if (isset($headerImg) && isset($productImg)) {
+					echo "3";
+					die();
+					$data = array(
+						'header_img' => $headerImg['upload_data']['file_name'],
+						'product_img' => $productImg['upload_data']['file_name'],
+						'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
+						'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
+						'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
+						'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
+						'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
+						'video_en'    => htmlspecialchars($this->input->post('video_en')),
 
-				);
-			} else if (!isset($headerImg) && isset($productImg)) {
-
-				$data = array(
-					'header_img' => htmlspecialchars($this->input->post('old_header_img')),
-					'product_img' => $productImg['upload_data']['file_name'],
-					'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
-					'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
-					'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
-					'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
-					'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
-					'video_en'    => htmlspecialchars($this->input->post('video_en')),
-
-				);
-			} else if (isset($headerImg) && isset($productImg)) {
-
-				$data = array(
-					'header_img' => $headerImg['upload_data']['file_name'],
-					'product_img' => $productImg['upload_data']['file_name'],
-					'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
-					'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
-					'about_title_en'    => htmlspecialchars($this->input->post('about_title_en')),
-					'about_description_en'    => htmlspecialchars($this->input->post('about_description_en')),
-					'video_tr'    => htmlspecialchars($this->input->post('video_tr')),
-					'video_en'    => htmlspecialchars($this->input->post('video_en')),
-
-				);
+					);
+				}
 			} else {
-
+				echo "4 çalıştı";
+				die();
 				$data = array(
 					'about_title_tr'    => htmlspecialchars($this->input->post('about_title_tr')),
 					'about_description_tr'    => htmlspecialchars($this->input->post('about_description_tr')),
@@ -112,6 +113,8 @@ class DashboardAbout extends CI_Controller
 					'video_en'    => htmlspecialchars($this->input->post('video_en')),
 				);
 			}
+
+			die();
 
 			$saveDetails = $this->pages_model->update(
 				array(

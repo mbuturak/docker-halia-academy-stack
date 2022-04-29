@@ -59,8 +59,7 @@
                 <div class="col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
                     <div class="ms-lg-4">
                         <div class="section-title">
-                            <h4 class="title mb-4"><?php echo ($_SESSION['lang'] == "en") ? $pageDetails->about_title_en : $pageDetails->about_title_tr ?><?php $getSeoUrl = getMenuInformation($pageDetails->menuId); ?>
-                                <?php if ($pageDetails->productType == 3) { ?> <a href="<?php echo base_url("shop/") . $getSeoUrl[0]->seo_url ?>" class="btn btn-primary"><?php echo $this->lang->line("browseproducts") ?><i class="uil uil-angle-right-b"></i></a><?php } ?></h4>
+                            <h4 class="title mb-4"><?php echo ($_SESSION['lang'] == "en") ? $pageDetails->about_title_en : $pageDetails->about_title_tr ?></h4>
                             <p class="text-muted"><?php echo ($_SESSION['lang'] == "en") ? $pageDetails->about_description_en : $pageDetails->about_description_tr ?></p>
                         </div>
                     </div>
@@ -129,8 +128,9 @@
     </section>
     <!-- End -->
 
-
     <?php $this->load->view('web/common/footer') ?>
+
+    <?php $this->load->view('web/common/all_js') ?>
 </body>
 
 </html>

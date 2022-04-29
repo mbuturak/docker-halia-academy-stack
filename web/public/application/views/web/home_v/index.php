@@ -19,49 +19,106 @@
 
 	<!-- Navbar STart -->
 	<?php $this->load->view('web/component/navbar') ?>
+	<!--end header-->
 	<!-- Navbar End -->
-	<?php $hero = getHero(); ?>
-	<section class="swiper-slider-hero position-relative d-block" style="height:60vh !important;" id="home">
-		<div class="swiper-container">
-			<div class="swiper-wrapper">
-				<?php foreach ($hero as $heroItem) { ?>
-					<div class="swiper-slide d-flex align-items-center overflow-hidden">
-						<div class="slide-inner slide-bg-image d-flex align-items-center" style="background: center center;" data-background="<?php echo base_url('assets/uploads/') . $heroItem->image ?>">
-							<div class="bg-overlay"></div>
-							<div class="container">
-								<div class="row justify-content-center">
-									<div class="col-12">
-										<div class="title-heading text-center">
-											<h1 class="heading text-white title-dark mb-4"><?php echo ($_SESSION['lang'] == "en") ? $heroItem->title_en : $heroItem->title_tr ?></h1>
-											<p class="para-desc mx-auto text-white-50"><?php echo ($_SESSION['lang'] == "en") ? $heroItem->description_en : $heroItem->description_tr ?>.</p>
+
+	<!-- Hero Start -->
+	<?php
+	$this->load->view('web/component/hero')
+	?>
+	<!--end section-->
+	<div class="position-relative">
+		<div class="shape overflow-hidden text-white">
+			<svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+			</svg>
+		</div>
+	</div>
+	<!-- Hero End -->
+	<?php
+	$trainingCategories = getTrainingCategories();
+	$getTrainings = getTraining();
+	?>
+	<!-- Start -->
+	<section class="section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 filters-group-wrap">
+					<div class="filters-group">
+						<ul class="container-filter list-inline mb-0 filter-options text-center">
+							<li class="list-inline-item categories-name border text-dark rounded active" data-group="all">All</li>
+							<?php foreach ($trainingCategories as $trainingCategory) { ?>
+								<li class="list-inline-item categories-name border text-dark rounded" data-group="<?php echo $trainingCategory->Id ?>"><?php echo ($_SESSION['lang'] == "en") ? $trainingCategory->title_en : $trainingCategory->title_tr ?></li>
+							<?php } ?>
+
+						</ul>
+					</div>
+				</div>
+				<!--end col-->
+			</div>
+			<!--end row-->
+
+			<div class="row justify-content-center">
+				<div class="col-md-9">
+					<div id="grid" class="row">
+						<?php foreach ($getTrainings as $training) { ?>
+							<div class="col-md-6 col-12 mt-4 pt-2 picture-item" data-groups='["<?php echo $training->categoryId ?>"]'>
+								<div class="card border-0 work-container work-classic">
+									<div class="card-body p-0">
+										<a href="<?php echo base_url('course/') . $training->seo_url ?>"><img src="<?php echo base_url('assets/uploads/') . $training->Image ?>" class="img-fluid rounded work-image" alt=""></a>
+										<div class="content pt-3">
+											<h5 class="mb-0"><a href="<?php echo base_url('course/') . $training->seo_url ?>" class="text-dark title"><?php echo ($_SESSION['lang'] == 'en') ? $training->trainingName_en : $training->trainingName_tr ?></a></h5>
+											<?php $categoryName = getTrainingCategoriesId($training->categoryId) ?>
+											<h6 class="text-muted tag mb-0"><?php echo ($_SESSION['lang'] == 'en') ? $categoryName[0]->title_en : $categoryName[0]->title_tr ?></h6>
+											<h6 class="text-muted tag mb-0"><?php echo  $training->isStartAt . ' - ' . $training->isEndAt ?></h6>
 										</div>
 									</div>
-									<!--end col-->
 								</div>
-								<!--end row-->
 							</div>
-							<!--end container-->
-						</div><!-- end slide-inner -->
-					</div> <!-- end swiper-slide -->
-				<?php } ?>
+							<!--end col-->
+						<?php } ?>
+					</div>
+					<!--end row-->
+				</div>
+				<div class="col-md-3">
+					<div class="card border-0 sidebar sticky-bar rounded shadow">
+						<div class="card-body">
 
+							<!-- Categories -->
+							<div class="widget mb-4 pb-2">
+								<h5 class="widget-title">Categories</h5>
+								<ul class="list-unstyled mt-4 mb-0 blog-categories">
+									<?php
+									foreach ($trainingCategories as $categoryItem) { ?>
+										<li><a href="jvascript:void(0)"><?php echo ($_SESSION['lang'] == 'en') ? $categoryItem->title_en : $categoryItem->title_tr ?></a></li>
+									<?php } ?>
+
+								</ul>
+							</div>
+							<!-- Categories -->
+
+							<!-- SOCIAL -->
+							<div class="widget">
+								<h5 class="widget-title">Follow us</h5>
+								<ul class="list-unstyled social-icon mb-0 mt-4">
+									<li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
+									<li class="list-inline-item"><a href="https://www.linkedin.com/company/halia-academy" class="rounded"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></a></li>
+								</ul>
+								<!--end icon-->
+							</div>
+							<!-- SOCIAL -->
+						</div>
+					</div>
+					<!--end col-->
+				</div>
 			</div>
-			<!-- end swiper-wrapper -->
-
-			<!-- swipper controls -->
-			<!-- <div class="swiper-pagination"></div> -->
-			<div class="swiper-button-next border rounded-circle text-center"></div>
-			<div class="swiper-button-prev border rounded-circle text-center"></div>
 		</div>
 		<!--end container-->
 	</section>
-	<!--end section-->
-	<!-- Hero End -->
+	<!-- End -->
 
-	<!-- FEATURES START -->
-	<?php $this->load->view('web/component/features') ?>
-	<!--end section-->
-	<?php $this->load->view('web/common/footer'); ?>
+	<!-- Footer Start -->
+	<?php $this->load->view('web/common/footer') ?>
 </body>
 
 </html>

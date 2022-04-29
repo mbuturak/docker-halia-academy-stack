@@ -49,26 +49,12 @@ class DashboardComment extends CI_Controller
 
 		if ($validate) {
 
-			if (isset($_FILES["image"])) {
-				$imageName = $this->ddoo_upload('image');
-			}
-
-			if (isset($imageName)) {
-				$data = array(
-					"image" => $imageName['upload_data']['file_name'],
-					"name" => htmlspecialchars($this->input->post('name')),
-					"comment" => htmlspecialchars($this->input->post('comment')),
-					"isCreatedAt" => date("d/m/Y H:i")
-				);
-			} else {
-				$data = array(
-					"name" => htmlspecialchars($this->input->post('name')),
-					"comment" => htmlspecialchars($this->input->post('comment')),
-					"isCreatedAt" => date("d/m/Y H:i")
-				);
-			}
-
-			$saveDetails = $this->comment_model->add($data);
+			$saveDetails = $this->comment_model->add(array(
+				"name" => htmlspecialchars($this->input->post('name')),
+				"comment" => htmlspecialchars($this->input->post('comment')),
+				"trainingId" => $this->input->post('trainingId'),
+				"isCreatedAt" => date("d/m/Y H:i")
+			));
 
 			if ($saveDetails) {
 				$alert = array(
@@ -120,40 +106,23 @@ class DashboardComment extends CI_Controller
 
 		if ($validate) {
 
-			if (isset($_FILES['image'])) {
-				if ($this->input->post('old_image') != $_FILES["image"]['name']) {
-					unlink('assets/uploads/comments/' . $this->input->post('old_image'));
-				}
-				$imageName = $this->ddoo_upload('image');
-			}
-
-			if (isset($imageName)) {
-				$data = array(
-					"image" => $imageName['upload_data']['file_name'],
-					"name" => htmlspecialchars($this->input->post('name')),
-					"comment" => htmlspecialchars($this->input->post('comment')),
-					"isCreatedAt" => date("d/m/Y H:i")
-				);
-			} else {
-				$data = array(
-					"name" => htmlspecialchars($this->input->post('name')),
-					"comment" => htmlspecialchars($this->input->post('comment')),
-					"isCreatedAt" => date("d/m/Y H:i")
-				);
-			}
 
 
-			$saveDetails = $this->comment_model->update(array("Id" => $id), $data);
+			$saveDetails = $this->comment_model->update(array(), array(
+				"name" => htmlspecialchars($this->input->post('name')),
+				"comment" => htmlspecialchars($this->input->post('comment')),
+				"trainingId" => $this->input->post('trainingId'),
+				"isCreatedAt" => date("d/m/Y H:i")
+			));
 
 			if ($saveDetails) {
 				$alert = array(
-					"text" => "Güncelleme başarılı!",
+					"text" => "Ekleme başarılı!",
 					"type" => "success"
 				);
 			} else {
 				$alert = array(
-					"text" => "Güncelleme sırasında bir hata meydana geldi!",
-					"type" => "error"
+					"text" => "Ekleme sırasında bir hata meydana geldi!",
 				);
 			}
 			$this->session->set_flashdata("alert", $alert);
@@ -164,30 +133,10 @@ class DashboardComment extends CI_Controller
 		}
 	}
 
-	public function removeComment($id)
+	public function removeComment()
 	{
-		$delete = $this->comment_model->delete(array('Id' => $id));
-		if ($delete) {
-			$alert = array(
-				"type" => "success",
-				"text" => "Kayıt silindi"
-			);
-		}
-		$this->session->set_flashdata("alert", $alert);
-		redirect(base_url('manage-comment'));
-	}
+		$id = $this->input->post("commentId");
 
-	public function ddoo_upload($filename)
-	{
-		$config["allowed_types"] = "jpg|jpeg|png|svg";
-		$config["upload_path"] =   "assets/uploads/comments/";
-		$this->load->library('upload', $config);
-		if (!$this->upload->do_upload($filename)) {
-			$error = array('error' => $this->upload->display_errors());
-			return $error;
-		} else {
-			$data = array('upload_data' => $this->upload->data());
-			return $data;
-		}
+		$this->comment_model->delete(array('Id' => $id));
 	}
 }

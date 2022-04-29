@@ -76,7 +76,7 @@
                                         <div class="mb-4">
                                             <label for="formFileSm" class="form-label">Kapak Görseli</label>
                                             <input class="form-control form-control-sm" name="header_img" type="file">
-                                            <input class="form-control form-control-sm" name="old_header_img" type="hidden" value="<?php echo (isset($aboutItem->header_img)) ? $aboutItem->header_img : "no-photo.png" ?>">
+                                            <input class="form-control form-control-sm" name="old_header_img" type="hidden" value="<?php echo (isset($aboutItem->header_img) && ($aboutItem->header_img != "no-photo.png")) ? $aboutItem->header_img : "no-photo.png" ?>">
                                         </div>
                                     </div>
 
@@ -85,7 +85,7 @@
                                         <div class="mb-3">
                                             <label for="formFileSm" class="form-label">Proje Görseli</label>
                                             <input class="form-control form-control-sm" name="product_img" id="formFileSm" type="file">
-                                            <input class="form-control form-control-sm" name="old_product_img" id="formFileSm" type="hidden" value="<?php echo (isset($aboutItem->product_img)) ? $aboutItem->product_img : "no-photo.png" ?>">
+                                            <input class="form-control form-control-sm" name="old_product_img" id="formFileSm" type="hidden" value="<?php echo (isset($aboutItem->product_img) && ($aboutItem->product_img != "no-photo.png")) ? $aboutItem->product_img : "no-photo.png" ?>">
                                         </div>
                                     </div>
                                 </div>

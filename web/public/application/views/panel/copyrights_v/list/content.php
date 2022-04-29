@@ -38,6 +38,7 @@ if (isset($_SESSION['copyrightsItem'])) { ?>
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <?php if (isset($_SESSION['errors'])) { ?>
                                         <div class="card-footer mt-3">
                                             <code><?php print_r($_SESSION['errors']) ?></code>

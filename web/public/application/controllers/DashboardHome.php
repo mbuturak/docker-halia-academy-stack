@@ -14,7 +14,8 @@ class DashboardHome extends CI_Controller
 		$this->mainFolder = "panel";
 		$this->viewFolder = "home_v";
 		$this->load->model('hero_model');
-		$this->load->model('features_model');
+		$this->load->model('application_model');
+		$this->load->model('copyrights_model');
 	}
 
 	public function index()
@@ -22,99 +23,19 @@ class DashboardHome extends CI_Controller
 		$viewData = new stdClass();
 		$viewData->mainFolder = $this->mainFolder;
 		$viewData->viewFolder = $this->viewFolder;
-		$viewData->heroItem = $this->hero_model->get_all();
+		$viewData->heroItem = $this->hero_model->get(array('Id' => 1));
 		$this->load->view("{$this->mainFolder}/{$viewData->viewFolder}/index", $viewData);
 	}
 
-	public function newHero()
+	public function saveDetails()
 	{
-		$viewData = new stdClass();
-		$viewData->mainFolder = $this->mainFolder;
-		$viewData->viewFolder = $this->viewFolder;
-		$this->load->view("{$this->mainFolder}/{$viewData->viewFolder}/add/index", $viewData);
-	}
-
-	public function newFeatures()
-	{
-		$viewData = new stdClass();
-		$viewData->mainFolder = $this->mainFolder;
-		$viewData->viewFolder = $this->viewFolder;
-		$this->load->view("{$this->mainFolder}/{$viewData->viewFolder}/features/index", $viewData);
-	}
-
-	public function addFeatures()
-	{
-
 		$this->load->library("form_validation");
 
 		$this->form_validation->set_rules("title_tr", "Başlık (TR)", "required|trim");
 		$this->form_validation->set_rules("title_en", "Başlık (EN)", "required|trim");
 		$this->form_validation->set_rules("description_tr", "Açıklama (TR)", "required|trim");
 		$this->form_validation->set_rules("description_en", "Açıklama (EN)", "required|trim");
-		$this->form_validation->set_rules("url", "Url", "required|trim");
-		$this->form_validation->set_rules("rank", "Sıra", "required|trim");
-		$this->form_validation->set_message(array(
-			"required" => "{field} alanı doldurulmadı."
-		));
 
-		$validate = $this->form_validation->run();
-
-		if ($validate) {
-
-			if (isset($_FILES["icon"]) && $_FILES["icon"]["name"] != '' && $_FILES["icon"]["name"] != "no-photo.png") {
-
-				$image = $this->ddoo_upload('icon');
-				if (isset($image)) {
-					$data = array(
-						'icon' => $image['upload_data']['file_name'],
-						"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-						"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-						"title_en" => htmlspecialchars($this->input->post("title_en")),
-						"description_en" => htmlspecialchars($this->input->post("description_en")),
-						"url"	=> htmlspecialchars($this->input->post('url')),
-						"productType"	=> htmlspecialchars($this->input->post('productType')),
-						"rank" => htmlspecialchars($this->input->post('rank'))
-					);
-				}
-			} else {
-				$data = array(
-					"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-					"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-					"title_en" => htmlspecialchars($this->input->post("title_en")),
-					"description_en" => htmlspecialchars($this->input->post("description_en")),
-					"url"	=> htmlspecialchars($this->input->post('url')),
-					"productType"	=> htmlspecialchars($this->input->post('productType')),
-					"rank" => htmlspecialchars($this->input->post('rank'))
-				);
-			}
-
-
-			$saveDetails = $this->features_model->add($data);
-
-			if ($saveDetails) {
-				$alert = array(
-					"text" => "Features ekleme başarılı!",
-					"type" => "success"
-				);
-			} else {
-				$alert = array(
-					"text" => "Features ekleme sırasında bir hata meydana geldi!",
-				);
-			}
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-menu'));
-		} else {
-			$this->session->set_flashdata("errors", validation_errors());
-			redirect(base_url('manage-menu'));
-		}
-	}
-
-	public function addHero()
-	{
-		$this->load->library("form_validation");
-
-		$this->form_validation->set_rules("title_tr", "Başlık (TR)", "required|trim");
-		$this->form_validation->set_rules("title_en", "Başlık (EN)", "required|trim");
 
 		$this->form_validation->set_message(array(
 			"required" => "{field} alanı doldurulmadı."
@@ -126,7 +47,12 @@ class DashboardHome extends CI_Controller
 
 			if (isset($_FILES["image"]) && $_FILES["image"]["name"] != '' && $_FILES["image"]["name"] != "no-photo.png") {
 
-				$image = $this->ddoo_upload('image');
+				if ($this->input->post('old_image') != $_FILES["image"]["name"]) {
+					if (file_exists("assets/upload/" . $this->input->post('old_image'))) {
+						unlink('assets/uploads/' . $this->input->post('old_image'));
+					}
+					$image = $this->ddoo_upload('image');
+				}
 
 				if (isset($image)) {
 					$data = array(
@@ -135,7 +61,8 @@ class DashboardHome extends CI_Controller
 						"description_tr" => htmlspecialchars($this->input->post("description_tr")),
 						"title_en" => htmlspecialchars($this->input->post("title_en")),
 						"description_en" => htmlspecialchars($this->input->post("description_en")),
-						"rank" => htmlspecialchars($this->input->post('rank'))
+						"videoLink_tr" => htmlspecialchars($this->input->post("description_en")),
+						"videoLink_en" => htmlspecialchars($this->input->post("description_en")),
 					);
 				}
 			} else {
@@ -144,188 +71,26 @@ class DashboardHome extends CI_Controller
 					"description_tr" => htmlspecialchars($this->input->post("description_tr")),
 					"title_en" => htmlspecialchars($this->input->post("title_en")),
 					"description_en" => htmlspecialchars($this->input->post("description_en")),
-					"rank" => htmlspecialchars($this->input->post('rank'))
-				);
-			}
-
-
-			$saveDetails = $this->hero_model->add($data);
-
-			if ($saveDetails) {
-				$alert = array(
-					"text" => "Hero ekleme başarılı!",
-					"type" => "success"
-				);
-			} else {
-				$alert = array(
-					"text" => "Hero ekleme sırasında bir hata meydana geldi!",
-				);
-			}
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-home'));
-		} else {
-			$this->session->set_flashdata("errors", validation_errors());
-			redirect(base_url('manage-home'));
-		}
-	}
-
-	public function editHeroItem($id)
-	{
-
-		if (!isset($id)) {
-			$alert = array(
-				"text" => "Böyle bir heroItem bulunamadı !",
-			);
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-home'));
-			die();
-		} else {
-			$heroItem = $this->hero_model->get(array("Id" => $id));
-			$this->session->set_flashdata("heroItem", $heroItem);
-			redirect(base_url('manage-home'));
-		}
-	}
-
-	public function editFeaturesItem($id)
-	{
-
-		if (!isset($id)) {
-			$alert = array(
-				"text" => "Böyle bir heroItem bulunamadı !",
-			);
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-home'));
-			die();
-		} else {
-			$heroItem = $this->features_model->get(array("Id" => $id));
-			$this->session->set_flashdata("featuresItem", $heroItem);
-			redirect(base_url('manage-home'));
-		}
-	}
-
-	public function saveHeroDetails($id)
-	{
-
-		$this->load->library("form_validation");
-
-		$this->form_validation->set_rules("title_tr", "Başlık (TR)", "required|trim");
-		$this->form_validation->set_rules("title_en", "Başlık (EN)", "required|trim");
-
-		$this->form_validation->set_message(array(
-			"required" => "{field} alanı doldurulmadı."
-		));
-
-		$validate = $this->form_validation->run();
-
-		if ($validate) {
-
-			if (isset($_FILES["image"]) && $_FILES["image"]["name"] != '' && $_FILES["image"]["name"] != "no-photo.png") {
-
-				if (file_exists("assets/upload/" . $this->input->post('old_image'))) {
-					unlink('assets/uploads/' . $this->input->post('old_image'));
-				}
-
-				$image = $this->ddoo_upload('image');
-
-				if (isset($image)) {
-					$data = array(
-						'image' => $image['upload_data']['file_name'],
-						"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-						"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-						"title_en" => htmlspecialchars($this->input->post("title_en")),
-						"description_en" => htmlspecialchars($this->input->post("description_en")),
-						"rank" => htmlspecialchars($this->input->post('rank'))
-					);
-				}
-			} else {
-				$data = array(
-					"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-					"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-					"title_en" => htmlspecialchars($this->input->post("title_en")),
-					"description_en" => htmlspecialchars($this->input->post("description_en")),
-					"rank" => htmlspecialchars($this->input->post('rank'))
+					"videoLink_tr" => htmlspecialchars($this->input->post("description_en")),
+					"videoLink_en" => htmlspecialchars($this->input->post("description_en")),
 				);
 			}
 
 
 			$saveDetails = $this->hero_model->update(array(
-				"Id" => $id
+				"Id" => 1
 			), $data);
 
 			if ($saveDetails) {
-				$alert = array(
-					"text" => "Güncelleme başarılı!",
-					"type" => "success"
+				//Save Copyrights
+				$this->copyrights_model->update(array("contentId" => 1),
+					array(
+						"title" => $_FILES["image"]["name"],
+						"url" => $this->input->post('copyrights_url'),
+						"contentId" => $this->input->post('contentId')
+					)
 				);
-			} else {
-				$alert = array(
-					"text" => "Güncelleme sırasında bir hata meydana geldi!",
-				);
-			}
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-home'));
-		} else {
-			$this->session->set_flashdata("errors", validation_errors());
-			redirect(base_url('manage-home'));
-		}
-	}
 
-	public function saveFeatures($id)
-	{
-		$this->load->library("form_validation");
-
-		$this->form_validation->set_rules("title_tr", "Başlık (TR)", "required|trim");
-		$this->form_validation->set_rules("title_en", "Başlık (EN)", "required|trim");
-		$this->form_validation->set_rules("description_tr", "Açıklama (TR)", "required|trim");
-		$this->form_validation->set_rules("description_en", "Açıklama (EN)", "required|trim");
-		$this->form_validation->set_rules("url", "Url", "required|trim");
-		$this->form_validation->set_rules("rank", "Sıra", "required|trim");
-
-		$this->form_validation->set_message(array(
-			"required" => "{field} alanı doldurulmadı."
-		));
-
-		$validate = $this->form_validation->run();
-
-		if ($validate) {
-
-			if (isset($_FILES["icon"]) && $_FILES["icon"]["name"] != '' && $_FILES["icon"]["name"] != "no-photo.png") {
-
-				if ($this->input->post('old_icon') != "no-image.png") {
-					unlink('assets/uploads/' . $this->input->post('old_icon'));
-				}
-
-
-				$icon = $this->ddoo_upload('icon');
-
-				if (isset($icon)) {
-					$data = array(
-						'icon' => $icon['upload_data']['file_name'],
-						"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-						"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-						"title_en" => htmlspecialchars($this->input->post("title_en")),
-						"description_en" => htmlspecialchars($this->input->post("description_en")),
-						"url"	=> htmlspecialchars($this->input->post('url')),
-						"rank" => htmlspecialchars($this->input->post('rank'))
-					);
-				}
-			} else {
-				$data = array(
-					"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-					"description_tr" => htmlspecialchars($this->input->post("description_tr")),
-					"title_en" => htmlspecialchars($this->input->post("title_en")),
-					"description_en" => htmlspecialchars($this->input->post("description_en")),
-					"url"	=> htmlspecialchars($this->input->post('url')),
-					"rank" => htmlspecialchars($this->input->post('rank'))
-				);
-			}
-
-
-			$saveDetails = $this->features_model->update(array(
-				"Id" => $id
-			), $data);
-
-			if ($saveDetails) {
 				$alert = array(
 					"text" => "Güncelleme başarılı!",
 					"type" => "success"
@@ -370,83 +135,16 @@ class DashboardHome extends CI_Controller
 		$this->hero_model->delete(array('Id' => $id));
 	}
 
-	public function removeFeatures($idForm = null)
+	public function removeFeatures()
 	{
-		if (isset($idForm)) {
-			$id = $idForm;
-		} else {
-			$id = $this->input->post("featuresId");
-		}
-
+		$id = $this->input->post("featuresId");
 
 		$getFeatures = $this->features_model->get(array('Id' => $id));
 
-		if ($getFeatures->icon != "no-image.png") {
-			unlink('assets/uploads/' . $getFeatures->icon);
+		if ($getFeatures->image != "no-image.png" && file_exists("assets/upload/" . $getFeatures->image)) {
+			unlink('assets/uploads/' . $getFeatures->image);
 		}
 
-		$this->features_model->delete(array('Id' => $id));
-	}
-
-	public function saveFeaturesSpesific($id)
-	{
-		$this->load->library("form_validation");
-
-		$this->form_validation->set_rules("title_tr", "Başlık (TR)", "required|trim");
-		$this->form_validation->set_rules("title_en", "Başlık (EN)", "required|trim");
-
-
-		$this->form_validation->set_message(array(
-			"required" => "{field} alanı doldurulmadı."
-		));
-
-		$validate = $this->form_validation->run();
-
-		if ($validate) {
-
-			if (isset($_FILES["icon"]) && $_FILES["icon"]["name"] != '' && $_FILES["icon"]["name"] != "no-photo.png") {
-
-				if ($this->input->post('old_icon') != "no-image.png" || $this->input->post('old_icon') != $_FILES["icon"]["name"]) {
-					unlink('assets/uploads/' . $this->input->post('old_icon'));
-				}
-
-				$icon = $this->ddoo_upload('icon');
-
-				if (isset($icon)) {
-					$data = array(
-						'icon' => $icon['upload_data']['file_name'],
-						"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-						"title_en" => htmlspecialchars($this->input->post("title_en")),
-
-					);
-				}
-			} else {
-				$data = array(
-					"title_tr" => htmlspecialchars($this->input->post("title_tr")),
-					"title_en" => htmlspecialchars($this->input->post("title_en")),
-				);
-			}
-
-
-			$saveDetails = $this->features_model->update(array(
-				"Id" => $id
-			), $data);
-
-			if ($saveDetails) {
-				$alert = array(
-					"text" => "Güncelleme başarılı!",
-					"type" => "success"
-				);
-			} else {
-				$alert = array(
-					"text" => "Güncelleme sırasında bir hata meydana geldi!",
-				);
-			}
-			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url('manage-menu'));
-		} else {
-			$this->session->set_flashdata("errors", validation_errors());
-			redirect(base_url('manage-menu'));
-		}
+		$this->hero_model->delete(array('Id' => $id));
 	}
 }

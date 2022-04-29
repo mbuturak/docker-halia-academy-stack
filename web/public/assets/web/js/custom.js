@@ -1,4 +1,5 @@
  $(function() {
+
   $(".productType").change(function(){
 
     var myValue = $(this).val();
@@ -17,5 +18,4 @@
     })
   })
 
-  
 });

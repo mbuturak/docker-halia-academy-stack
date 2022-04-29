@@ -25,72 +25,56 @@
                         <span>Anasayfa</span>
                     </a>
                 </li>
-
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('manage-about') ?>" class='sidebar-link'>
-                        <i class="bi bi-file-earmark-person"></i>
-                        <span>Hakkımızda</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="<?php echo base_url('manage-keywords') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('manage-achievements') ?>" class='sidebar-link'>
                         <i class="bi bi-asterisk"></i>
-                        <span>Anahtar Kelimeler</span>
+                        <span>Ekstra</span>
                     </a>
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-hdd-rack"></i>
-                        <span>Menu İşlemleri</span>
+                        <i class="bi bi-calendar-week-fill"></i>
+                        <span>Akademi</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('new-menu') ?>">Yeni Ekle</a>
+                            <a href="<?php echo base_url('manage-apply') ?>">Başvurular</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('manage-menu') ?>">Listele</a>
+                            <a href="<?php echo base_url('new-training') ?>">Yeni Ekle</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('DashboardMenu/getProductMenu/2') ?>">Yazılım Menü</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="<?php echo base_url('DashboardMenu/getProductMenu/3') ?>">Donanım Menü</a>
+                            <a href="<?php echo base_url('manage-training') ?>">Eğitimleri Listele</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-chat"></i>
-                        <span>Yorumlar</span>
+                        <i class="bi bi-people"></i>
+                        <span>Eğitmenler</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('new-comment') ?>">Yeni Yorum Ekle</a>
+                            <a href="<?php echo base_url('new-tutor') ?>">Yeni Ekle</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('manage-comment') ?>">Listele</a>
+                            <a href="<?php echo base_url('manage-tutor') ?>">Listele</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-image-alt"></i>
-                        <span>Partnerlerimiz</span>
+                        <i class="bi bi-file-earmark-richtext"></i>
+                        <span>Blog</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('new-partners') ?>">Yeni Ekle</a>
+                            <a href="<?php echo base_url('new-blog') ?>">Yeni Ekle</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('manage-partners') ?>">Listele</a>
+                            <a href="<?php echo base_url('manage-blog') ?>">Listele</a>
                         </li>
                     </ul>
-                </li>
-                <li class="sidebar-item">
-                    <a href="<?php echo base_url('manage-contact') ?>" class='sidebar-link'>
-                        <i class="bi bi-inboxes"></i>
-                        <span>Gelen Kutusu</span>
-                    </a>
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
@@ -108,26 +92,29 @@
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-hdd-rack"></i>
-                        <span>E-Katalog</span>
+                        <i class="bi bi-input-cursor-text"></i>
+                        <span>Değerlendirme</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('new-hardware') ?>">Yeni Ürün Ekle</a>
+                            <a href="<?php echo base_url('new-comment') ?>">Yeni Ekle</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="<?php echo base_url('manage-hardware') ?>">Listele</a>
+                            <a href="<?php echo base_url('manage-comment') ?>">Listele</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-sliders"></i>
-                        <span>Site Ayarları</span>
+                        <i class="bi bi-hdd-rack"></i>
+                        <span>Menu İşlemleri</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="manage-settings">Genel bilgiler</a>
+                            <a href="<?php echo base_url('new-menu') ?>">Yeni Ekle</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="<?php echo base_url('manage-menu') ?>">Listele</a>
                         </li>
                     </ul>
                 </li>

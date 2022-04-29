@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $route['default_controller'] = 'Home';
 $route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = TRUE;
 
 //CMS Routes
 $route['cms'] = 'Dashboard';
@@ -23,45 +23,55 @@ $route['manage-contact'] = 'DashboardContact';
 //Manage About
 $route['manage-about'] = "DashboardAbout";
 
-//Manage Menu
-$route['manage-menu'] = 'DashboardMenu';
-$route['edit-menu/(:any)'] = 'DashboardMenu/editMenuForm/$1';
-$route['new-menu'] = 'DashboardMenu/newMenuForm';
+//Manage Apply
+$route['manage-apply'] = "DashboardApply";
 
-//Manage Partners
-$route['manage-partners'] = 'DashboardPartners';
-$route['edit-partners/(:any)'] = 'DashboardPartners/editPartnersForm/$1';
-$route['new-partners'] = 'DashboardPartners/newPartnersForm';
+//Manage Training
+$route['manage-training'] = "DashboardTraining";
+$route['new-training'] = "DashboardTraining/newTrainingForm";
+$route['edit-training/(:any)'] = "DashboardTraining/editTraining/$1";
+
+//Manage Achievements
+$route['manage-achievements'] = "DashboardAchievements";
+$route['new-achievements'] = "DashboardAchievements/newAchievementsForm";
+$route['edit-achievements/(:any)'] = "DashboardAchievements/editAchievementsForm/$1";
+
+//Manage Tutor
+$route['manage-tutor'] = "DashboardTutor";
+$route['new-tutor'] = "DashboardTutor/newTutorForm";
+$route['edit-tutor/(:any)'] = "DashboardTutor/editTutor/$1";
 
 //Manage Copyrights
 $route['manage-copyrights'] = 'DashboardCopyrights';
 $route['edit-copyrights/(:any)'] = 'DashboardCopyrights/editCopyrightsForm/$1';
 $route['new-copyrights'] = 'DashboardCopyrights/newCopyrightsForm';
 
-//Manage Settings
-$route['manage-settings'] = 'DashboardSettings';
+//Manage Menu
+$route['manage-menu'] = 'DashboardMenu';
+$route['edit-menu/(:any)'] = 'DashboardMenu/editMenuForm/$1';
+$route['new-menu'] = 'DashboardMenu/newMenuForm';
 
-//Manage Comments
-$route['manage-comment'] = 'DashboardComment';
-$route['new-comment'] = 'DashboardComment/newCommentForm';
-$route['edit-comment/(:any)'] = 'DashboardComment/editComment/$1';
+
+//Manage Blog
+$route['manage-blog'] = "DashboardBlog";
+$route['new-blog'] = "DashboardBlog/newBlogForm";
+$route['edit-blog/(:any)'] = "DashboardBlog/editBlogForm/$1";
 
 //Manage Keywords
 $route['manage-keywords'] = 'DashboradKeywords';
 $route['new-keywords'] = 'DashboradKeywords/newKeywords';
 $route['edit-keywords/(:any)'] = 'DashboradKeywords/editKeywordForm/$1';
 
-//Manage Product
-$route['manage-hardware'] = 'DashboardHardware';
-$route['new-hardware'] = 'DashboardHardware/newHardware';
-$route['edit-hardware/(:any)'] = 'DashboardHardware/editHardwareForm/$1';
+//Manage Comments
+$route['manage-comment'] = 'DashboardComment';
+$route['new-comment'] = 'DashboardComment/newCommentForm';
+$route['edit-comment/(:any)'] = 'DashboardComment/editComment/$1';
 
 //Pages
 $route['welcome'] = 'Home';
-$route['details/(:any)'] = 'Pages/pageDetails/$1';
-$route['features/(:any)'] = 'Pages/featuresDetails/$1';
-$route['contact'] = 'Contact';
-$route['who-us'] = 'About';
-$route['shop/'] = 'Shop';
-$route['shop/(:any)'] = 'Shop/getProduct/$1';
-$route['product-details/(:any)'] = 'Shop/getProductDetails/$1';
+$route['training-calendar'] = 'Trainings/pageDetails';
+$route['course/(:any)'] = 'Trainings/trainingDetails/$1';
+$route['tutors'] = 'Tutors/pageDetails';
+$route['tutor-info/(:any)'] = 'Tutors/tutorDetails/$1';
+$route['blog'] = 'Blog/pageDetails';
+$route['blog-details/(:any)'] = 'Blog/blogDetails/$1';
